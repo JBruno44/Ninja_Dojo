@@ -44,9 +44,11 @@ public class AI_Move_JF : MonoBehaviour
                 break;
             case AIType.vector:
                 returnDir = VectorTrack(dir);
+                speed = 1;
                 break;
             case AIType.delta:
                 returnDir = deltaTrack(dir);
+                speed = 0.5f;
                 break;
             case AIType.evade:
                 returnDir = evade(dir);

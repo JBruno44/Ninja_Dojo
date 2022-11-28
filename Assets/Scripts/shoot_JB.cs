@@ -23,8 +23,8 @@ public class shoot_JB : MonoBehaviour
         // shootPoint.transform.position = new Vector3().;
 
         shootPoint.transform.position = this.transform.position;
-        shootPoint.transform.Rotate(0, 0, Constants.C.rotationAmount);
-        if (Input.GetKey(KeyCode.Mouse0) && !inCoolDown)
+       // shootPoint.transform.Rotate(0, 0, Constants.C.rotationAmount);
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !inCoolDown)
         {
             inCoolDown = true;
 
