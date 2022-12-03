@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class AI_Move_JF : MonoBehaviour
 {
-    public enum AIType { vector, delta, evade, none, patternMove };
+    public enum AIType { vector, delta, evade, none, patternMove, Waypoints };
     public AIType aiType = AIType.none;
     public float speed = 5;
 
     private GameObject player;
     private string name;
-   // private AIPatterns patterns;
+    public AIPatterns patterns;
+    public AIPatterns enemyAI;
    // private Waypoints waypoints;
 
     private bool isInvisible = false;
@@ -53,16 +54,16 @@ public class AI_Move_JF : MonoBehaviour
             case AIType.evade:
                 returnDir = evade(dir);
                 break;
-            /*case AIType.patternMove:
+            case AIType.patternMove:
                 patterns = GetComponent<AIPatterns>();
                 returnDir = patterns.evaluatePattern();
                 break;
-            case AIType.waypoints:
-                //returnDir= waypoints.closestWaypoint();
-                returnDir = waypoints.evaluateWaypoints();
-                break;
-            default:
+            /*case AIType.Waypoints:
+                returnDir= Waypoints.findClosestWaypoint();
+                returnDir = Waypoints.evaluateWayPoints();
                 break;*/
+            default:
+                break;
         }
         //Quick and dirty fix for "random close" movement
         if (Mathf.Abs(returnDir.x) < 0.1)
