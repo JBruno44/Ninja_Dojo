@@ -103,7 +103,7 @@ public class PlayerMove_JB : MonoBehaviour
             //{
             //    StartCoroutine(PlayerAnimation());
             //    isActive = true;
-           // }
+            // }
             //StartCoroutine(PlayParticles());
         }
         if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) && !(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) && !blockMovingLeft)
@@ -135,42 +135,42 @@ public class PlayerMove_JB : MonoBehaviour
                 //        isActive = true;
                 //    }
             }
-                //StartCoroutine(PlayParticles());
-         }
-            // Stop player animation when player stops moving
-            //if (isActive && !(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) && !(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) && !(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && !(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)))
-            //{
-            //    StopCoroutine(PlayerAnimation());
-            //    isActive = false;
-            //    currentTexture = 0;
-            //    renderer.sprite = playerSprites[currentTexture];
-            //}
-
-            if (direction != Vector2.zero)
-            {
-                direction.Normalize();
-            }
-            Mathf.Clamp(localSpeed, 0, 2f);
-            localSpeed = Mathf.Lerp(localSpeed, 0, 0.13f);
-            Vector3 newPosition = new Vector3(localSpeed * direction.x * Time.deltaTime, localSpeed * direction.y * Time.deltaTime, 0);
-            this.transform.position += newPosition;
-    }
-
-        //IEnumerator PlayParticles()
+            //StartCoroutine(PlayParticles());
+        }
+        // Stop player animation when player stops moving
+        //if (isActive && !(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) && !(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) && !(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && !(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)))
         //{
-        //    particles.Play();
-        //    yield return new WaitForSeconds(0.5f);
-        //    particles.Stop();
-        //}
-
-        //IEnumerator PlayerAnimation()
-        //{
+        //    StopCoroutine(PlayerAnimation());
+        //    isActive = false;
+        //    currentTexture = 0;
         //    renderer.sprite = playerSprites[currentTexture];
-        //    currentTexture = (currentTexture + 1) % playerSprites.Length;
-        //    yield return new WaitForSeconds(0.1f);
-        //    if (isActive)
-        //    {
-        //        StartCoroutine(PlayerAnimation());
-        //    }
         //}
+
+        if (direction != Vector2.zero)
+        {
+            direction.Normalize();
+        }
+        Mathf.Clamp(localSpeed, 0, 2f);
+        localSpeed = Mathf.Lerp(localSpeed, 0, 0.13f);
+        Vector3 newPosition = new Vector3(localSpeed * direction.x * Time.deltaTime, localSpeed * direction.y * Time.deltaTime, 0);
+        this.transform.position += newPosition;
     }
+
+    //IEnumerator PlayParticles()
+    //{
+    //    particles.Play();
+    //    yield return new WaitForSeconds(0.5f);
+    //    particles.Stop();
+    //}
+
+    //IEnumerator PlayerAnimation()
+    //{
+    //    renderer.sprite = playerSprites[currentTexture];
+    //    currentTexture = (currentTexture + 1) % playerSprites.Length;
+    //    yield return new WaitForSeconds(0.1f);
+    //    if (isActive)
+    //    {
+    //        StartCoroutine(PlayerAnimation());
+    //    }
+    //}
+}

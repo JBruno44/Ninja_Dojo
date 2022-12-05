@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class Kunai_JB : MonoBehaviour
 {
-   
+    public Manager_DC manager;
+    public Vector3 mousePosition;
+
 
     void Start()
     {
 
         Destroy(this.gameObject, 5);
 
+        //rotates kunai
+        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Vector2 direction = mousePosition - transform.position;
+
+        transform.up = direction;
     }
 
     // Update is called once per frame
@@ -23,34 +31,25 @@ public class Kunai_JB : MonoBehaviour
 
 
 
-//    private void OnTriggerEnter2D(Collider2D collision)
-//    {
-//        GameObject gameObject = collision.gameObject;
-//        if (gameObject.tag == "")
-//        {
-//            Constants.C.currentscore += 5;
-//            Destroy(gameObject);
-//            GameObject g = Instantiate(largeAsteroid);
-//            g.transform.position = new Vector3(Random.Range(-4, 4), Random.Range(-4, 4), 0);
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject gameObject = collision.gameObject;
+        if (gameObject.tag == "Ninja")
+        {
+            float ninjaX = 0.0f;
+            float ninjaY = 0.0f;
+            ninjaX = gameObject.transform.position.x;
+            ninjaY = gameObject.transform.position.y;
+            Destroy(gameObject);
+            manager.NinjaKilled(ninjaX, ninjaY);
 
-//            Destroy(this.gameObject);
-//        }
+            Destroy(this.gameObject);
 
-//        if (gameObject.tag == "Large")
-//        {
-//            Constants.C.currentscore += 1;
-//            Destroy(gameObject);
-//            GameObject g = Instantiate(smallAsteroid1);
-//            GameObject h = Instantiate(smallAsteroid1);
-//            g.transform.position = new Vector3(Random.Range(-4, 4), Random.Range(-4, 4), 0);
-//            h.transform.position = new Vector3(Random.Range(-4, 4), Random.Range(-4, 4), 0);
+        }
 
 
-//            Destroy(this.gameObject);
 
-//        }
-
-//    }
+    }
 
 
 }

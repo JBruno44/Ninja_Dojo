@@ -5,10 +5,11 @@ using UnityEngine;
 public class playerLook_JB : MonoBehaviour
 {
     public Vector3 mousePosition;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
 
@@ -19,6 +20,7 @@ public class playerLook_JB : MonoBehaviour
         Vector2 direction = mousePosition - transform.position;
 
         transform.up = direction;
+
 
     }
 }

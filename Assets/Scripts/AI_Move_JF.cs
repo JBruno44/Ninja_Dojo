@@ -38,7 +38,7 @@ public class AI_Move_JF : MonoBehaviour
 
         Vector3 dir = player.transform.position - this.transform.position;
         Vector2 returnDir = Vector2.zero;
-        //returnDir = new Vector2(dir.x, dir.y);
+        returnDir = new Vector2(dir.x, dir.y);
         switch (aiType)
         {
             case AIType.none:

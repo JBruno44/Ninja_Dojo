@@ -15,14 +15,25 @@ public class L2Manager_DC : MonoBehaviour
     public TMP_Text goalLine;
     public TMP_Text lives;
     public TMP_Text ammo; //again, no idea how to write the UI for this.  I'll wait after we send in the first build
+    public GameObject playerPrefab;
+    public GameObject collectablePrefab;
+    private GameObject player;
+    private GameObject collectable;
+    public AudioClip bloodSplat;
+    private AudioSource death;
+    public GameObject ninja;
+    public ParticleSystem blood;
     void Start()
     {
+        death = GetComponent<AudioSource>();
         score = PlayerPrefs.GetInt("cur_score");
         highScore = PlayerPrefs.GetInt("high_score");
         livesCount = PlayerPrefs.GetInt("lives");
         Debug.Log(score);
         Debug.Log(highScore);
         Debug.Log(livesCount);
+        player = Instantiate(playerPrefab);
+        player.transform.position = new Vector2(-0.1875f, 0.125f);
     }
 
     // Update is called once per frame
@@ -54,19 +65,50 @@ public class L2Manager_DC : MonoBehaviour
             }
         }
     }
-    public void NinjaKilled()
+    public void NinjaKilled(float ninjaX, float ninjaY) //dear gosh make sure you got the tagging and the collision up.  Someone, anyone
     {
         score += 10;
         kills++;
+        //insert kill here;
+        ParticleSystem bloodThing = Instantiate(blood);
+        bloodThing.transform.position = new Vector2(ninjaX, ninjaY);
+        bloodThing.Play();
+        if (!death.isPlaying)
+        {
+            death.PlayOneShot(bloodSplat, .8f);
+        }
+        //insert sound;
+        #region coroutinecall
+        StartCoroutine(instantiateEnemy());
+        #endregion
     }
 
-    public void NinjaDied()
+    public void NinjaDied() //for when the ninja dies.  you deal with Iframes.  Also, Where should I have them spawn for sanity reasons?
     {
         livesCount--;
     }
 
+
     public void BonusPoints()
     {
         score += 30; //call BonusPoints when you get a collectable
+    }
+
+    private IEnumerator instantiateEnemy()
+    {
+        int timeSpawn = Random.Range(2, 5);
+        yield return new WaitForSeconds(timeSpawn);
+        int randomSide = Random.Range(1, 2);
+        int randomHeight = Random.Range(1, 4);
+        if (randomSide == 1)
+        {
+            GameObject instance = Instantiate(ninja);
+            instance.transform.position = new Vector2(-10.1875f, randomHeight);
+        }
+        else
+        {
+            GameObject instance = Instantiate(ninja);
+            instance.transform.position = new Vector2(10.1875f, randomHeight);
+        }
     }
 }

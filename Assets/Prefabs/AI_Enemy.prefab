@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 8294249402206101117}
   - component: {fileID: 8294249402206101118}
   - component: {fileID: -2123677241551101876}
+  - component: {fileID: -7602231308768921994}
   m_Layer: 0
   m_Name: AI_Enemy
-  m_TagString: Untagged
+  m_TagString: Ninja
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,6 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aiType: 0
   speed: 1
+  patterns: {fileID: 0}
+  enemyAI: {fileID: 0}
 --- !u!61 &8294249402206101117
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -73,7 +76,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!50 &8294249402206101118
 Rigidbody2D:
@@ -148,3 +151,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-7602231308768921994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8294249402206101119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1da201a4d87546ab8d29085a016f772, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highScoreKey: high_score
+  curScoreKey: cur_score
+  livePref: lives
+  killGoal: 25
+  playerPrefab: {fileID: 7218367442031349070, guid: a79534cf660f5f447bd372b4c1ffa130, type: 3}
+  collectablePrefab: {fileID: 6128071781965263617, guid: 3e9a9e2e654346f41a4aa1e7da916a92, type: 3}
+  blood: {fileID: 8907950006333544842, guid: 8157c298669d2c74e89017b5cfb7a286, type: 3}
+  bloodSplat: {fileID: 8300000, guid: 4ea5f969bcba1424fb140ff2bfc26cbf, type: 3}
+  ninja: {fileID: 8294249402206101119}
+  scoreCounter: {fileID: 0}
+  goalLine: {fileID: 0}
+  lives: {fileID: 0}

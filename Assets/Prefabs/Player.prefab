@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 6525105600210920228}
   - component: {fileID: 265367401575661163}
   - component: {fileID: 255841357805671530}
+  - component: {fileID: 8087011455881391373}
+  - component: {fileID: 52019551414713813}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -29,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 7218367442031349070}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8113719567507708890}
@@ -150,6 +152,43 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8087011455881391373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7218367442031349070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4da86ac7c23a648a1986c86ccff065ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mousePosition: {x: 0, y: 0, z: 0}
+--- !u!114 &52019551414713813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7218367442031349070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1da201a4d87546ab8d29085a016f772, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highScoreKey: high_score
+  curScoreKey: cur_score
+  livePref: lives
+  killGoal: 25
+  playerPrefab: {fileID: 7218367442031349070}
+  collectablePrefab: {fileID: 0}
+  blood: {fileID: 8907950006333544842, guid: 8157c298669d2c74e89017b5cfb7a286, type: 3}
+  bloodSplat: {fileID: 8300000, guid: 4ea5f969bcba1424fb140ff2bfc26cbf, type: 3}
+  ninja: {fileID: 8294249402206101119, guid: 6fca405816570164cae8b07381836dec, type: 3}
+  scoreCounter: {fileID: 0}
+  goalLine: {fileID: 0}
+  lives: {fileID: 0}
 --- !u!1001 &5428076203684763356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -236,6 +275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 528298671016782034, guid: 6b672ba1b49d84a00beb8b851a8fb58f, type: 3}
   shootPoint: {fileID: 7669882500838836212}
+  player: {fileID: 0}
 --- !u!4 &8113719567507708890 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4309345030173052166, guid: ef2ba23f9935a4fc4af121e76ccb40d1, type: 3}

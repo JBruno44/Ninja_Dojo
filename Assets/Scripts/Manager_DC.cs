@@ -6,9 +6,6 @@ using TMPro;
 public class Manager_DC : MonoBehaviour
 {
     // Start is called before the first frame update
-    public TMP_Text scoreCounter;
-    public TMP_Text goalLine;
-    public TMP_Text lives;
    // public TMP_Text ammo; //idk if this is the right idea.  Might be best for me to wait until I get information about the ammo script before I code in the UI for it.
     //private int levelNum = 1; //might want to ignore this.  Or, we can have one level change backgrounds to make the score transfering easier.  Which do you think is better?
     private int livesCount = 3;
@@ -19,8 +16,21 @@ public class Manager_DC : MonoBehaviour
     private int score = 0;
     private int kills = 0;
     public int killGoal = 25;
+    public int numberOfEnemies = 0;
+    public GameObject playerPrefab;
+    public GameObject collectablePrefab;
+    private GameObject player;
+    private GameObject collectable;
+    public ParticleSystem blood;
+    public AudioClip bloodSplat;
+    private AudioSource death;
+    public GameObject ninja;
+    public TMP_Text scoreCounter;
+    public TMP_Text goalLine;
+    public TMP_Text lives;
     void Start()
     {
+        death = GetComponent<AudioSource>();
         if (PlayerPrefs.HasKey(highScoreKey))
         {
             pastScore = PlayerPrefs.GetInt(highScoreKey);
@@ -49,6 +59,14 @@ public class Manager_DC : MonoBehaviour
             PlayerPrefs.SetInt(livePref, 3);
             Debug.Log("Loading Lives Save");
         }
+        scoreCounter.text = "Score: "+ score.ToString();
+        lives.text = "Lives: " + livesCount.ToString();
+        goalLine.text = kills.ToString() + "/" + killGoal.ToString();
+       // player = Instantiate(playerPrefab);  //I don't know if I should use it.
+       // collectable = Instantiate(collectablePrefab);
+        #region coroutinecall
+        //StartCoroutine(instantiateEnemy());
+        #endregion
     }
 
     // Update is called once per frame
@@ -82,13 +100,25 @@ public class Manager_DC : MonoBehaviour
         }
     }
 
-    public void NinjaKilled()
+    public void NinjaKilled(float ninjaX, float ninjaY) //dear gosh make sure you got the tagging and the collision up.  Someone, anyone
     {
         score += 10;
         kills++;
+        //insert kill here;
+        ParticleSystem bloodThing = Instantiate(blood);
+        bloodThing.transform.position = new Vector2(ninjaX, ninjaY);
+        bloodThing.Play();
+        if (!death.isPlaying)
+        {
+            death.PlayOneShot(bloodSplat, .8f);
+        }
+        //insert sound;  I'll add it next week
+        //#region coroutinecall
+        StartCoroutine(instantiateEnemy());
+       // #endregion
     }
 
-    public void NinjaDied()
+    public void NinjaDied() //use this for when the player is hit.  Whoever is dealing with the player, you deal with I-frames.
     {
         livesCount--;
     }
@@ -96,5 +126,23 @@ public class Manager_DC : MonoBehaviour
     public void BonusPoints()
     {
         score += 30; //call BonusPoints when you get a collectable
+    }
+
+    private IEnumerator instantiateEnemy()
+    {
+        int timeSpawn = Random.Range(2, 5);
+        yield return new WaitForSeconds(timeSpawn);
+        int randomSide = Random.Range(1, 2);
+        int randomHeight = Random.Range(1, 4);
+        if (randomSide == 1)
+        {
+            GameObject instance = Instantiate(ninja);
+            instance.transform.position = new Vector2(-10.1875f, randomHeight);
+        }
+        else
+        {
+            GameObject instance = Instantiate(ninja);
+            instance.transform.position = new Vector2(10.1875f, randomHeight);
+        }
     }
 }
