@@ -6,7 +6,7 @@ using TMPro;
 public class Manager_DC : MonoBehaviour
 {
     // Start is called before the first frame update
-   // public TMP_Text ammo; //idk if this is the right idea.  Might be best for me to wait until I get information about the ammo script before I code in the UI for it.
+    // public TMP_Text ammo; //idk if this is the right idea.  Might be best for me to wait until I get information about the ammo script before I code in the UI for it.
     //private int levelNum = 1; //might want to ignore this.  Or, we can have one level change backgrounds to make the score transfering easier.  Which do you think is better?
     private int livesCount = 3;
     public string highScoreKey = "high_score";
@@ -16,11 +16,9 @@ public class Manager_DC : MonoBehaviour
     private int score = 0;
     private int kills = 0;
     public int killGoal = 25;
-    public int numberOfEnemies = 0;
     public GameObject playerPrefab;
     public GameObject collectablePrefab;
     private GameObject player;
-    private GameObject collectable;
     public ParticleSystem blood;
     public AudioClip bloodSplat;
     private AudioSource death;
@@ -44,10 +42,11 @@ public class Manager_DC : MonoBehaviour
         if (PlayerPrefs.HasKey(curScoreKey))
         {
             Debug.Log(PlayerPrefs.GetInt(curScoreKey));
+            PlayerPrefs.SetInt(curScoreKey, 0);
         }
         else
         {
-            PlayerPrefs.SetInt(curScoreKey, score);
+            PlayerPrefs.SetInt(curScoreKey, 0);
             Debug.Log("Loading Score Save");
         }
         if (PlayerPrefs.HasKey(livePref))
@@ -59,13 +58,18 @@ public class Manager_DC : MonoBehaviour
             PlayerPrefs.SetInt(livePref, 3);
             Debug.Log("Loading Lives Save");
         }
-        scoreCounter.text = "Score: "+ score.ToString();
+        score = 0;
+        scoreCounter.text = "Score: "+ score;
         lives.text = "Lives: " + livesCount.ToString();
         goalLine.text = kills.ToString() + "/" + killGoal.ToString();
-       // player = Instantiate(playerPrefab);  //I don't know if I should use it.
-       // collectable = Instantiate(collectablePrefab);
+        //player = Instantiate(playerPrefab);  I don't know if I should use it.
+        //collectable = Instantiate(collectablePrefab);
         #region coroutinecall
-        //StartCoroutine(instantiateEnemy());
+        StartCoroutine(instantiateEnemy());
+        #endregion
+
+        #region coroutinecall
+        StartCoroutine(instantiateCollectable());
         #endregion
     }
 
@@ -74,9 +78,17 @@ public class Manager_DC : MonoBehaviour
     {
         if (livesCount > 0 && kills < killGoal)
         {
-            scoreCounter.text = "Score: " + score.ToString();
-            lives.text = "Lives: " + livesCount.ToString();
-            goalLine.text = kills.ToString() + "/" + killGoal.ToString();
+            if (scoreCounter == null)
+            {
+                Debug.Log("counter");
+            }
+            if (score == null)
+            {
+                Debug.Log("score");
+            }
+            //scoreCounter.text = "Score: " + score.ToString();
+           // lives.text = "Lives: " + livesCount.ToString();
+           // goalLine.text = kills.ToString() + "/" + killGoal.ToString();
         }
         else
         {
@@ -89,6 +101,7 @@ public class Manager_DC : MonoBehaviour
                     pastScore = score;
                     PlayerPrefs.SetInt(highScoreKey, pastScore);
                 }
+                UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
             }
             else if (kills >= killGoal)
             {
@@ -113,19 +126,25 @@ public class Manager_DC : MonoBehaviour
             death.PlayOneShot(bloodSplat, .8f);
         }
         //insert sound;  I'll add it next week
-        //#region coroutinecall
+        #region coroutinecall
         StartCoroutine(instantiateEnemy());
-       // #endregion
+        #endregion
     }
 
     public void NinjaDied() //use this for when the player is hit.  Whoever is dealing with the player, you deal with I-frames.
     {
         livesCount--;
+        #region coroutinecall
+        StartCoroutine(instantiateEnemy());
+        #endregion
     }
 
     public void BonusPoints()
     {
         score += 30; //call BonusPoints when you get a collectable
+        #region coroutinecall
+        StartCoroutine(instantiateCollectable());
+        #endregion
     }
 
     private IEnumerator instantiateEnemy()
@@ -134,15 +153,29 @@ public class Manager_DC : MonoBehaviour
         yield return new WaitForSeconds(timeSpawn);
         int randomSide = Random.Range(1, 2);
         int randomHeight = Random.Range(1, 4);
+        GameObject instance = Instantiate(ninja);
         if (randomSide == 1)
         {
-            GameObject instance = Instantiate(ninja);
             instance.transform.position = new Vector2(-10.1875f, randomHeight);
         }
         else
         {
-            GameObject instance = Instantiate(ninja);
             instance.transform.position = new Vector2(10.1875f, randomHeight);
         }
+        AI_Move_JF ninjaThing = instance.GetComponent<AI_Move_JF>();
+        //ninjaThing.manager = this; //there should be a manager here, right?
+    }
+
+    private IEnumerator instantiateCollectable()
+    {
+        int timeSPawn = Random.Range(2, 5);
+        yield return new WaitForSeconds(timeSPawn);
+        Vector2 placement = new Vector2(0, 0);
+        float xPos = Random.Range(-10.5f, 10.5f);
+        float yPos = Random.Range(-3.8f, 3.8f);
+        GameObject instance = Instantiate(collectablePrefab);
+        instance.transform.position = new Vector2(xPos, yPos);
+        Collectable_DC collectable = instance.GetComponent<Collectable_DC>();
+        collectable.manager = this;
     }
 }

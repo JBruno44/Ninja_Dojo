@@ -11,14 +11,13 @@ public class L2Manager_DC : MonoBehaviour
     private int livesCount;
     private int kills = 0;
     public int killGoal = 50;
-    public TMP_Text scoreCounter;
-    public TMP_Text goalLine;
-    public TMP_Text lives;
+    public TMP_Text ScoreCounter;
+    public TMP_Text GoalLine;
+    public TMP_Text Lives;
     public TMP_Text ammo; //again, no idea how to write the UI for this.  I'll wait after we send in the first build
     public GameObject playerPrefab;
     public GameObject collectablePrefab;
     private GameObject player;
-    private GameObject collectable;
     public AudioClip bloodSplat;
     private AudioSource death;
     public GameObject ninja;
@@ -41,9 +40,9 @@ public class L2Manager_DC : MonoBehaviour
     {
         if (livesCount > 0 && kills < killGoal)
         {
-            scoreCounter.text = "Score: " + score.ToString();
-            lives.text = "Lives: " + livesCount.ToString();
-            goalLine.text = kills.ToString() + "/" + killGoal.ToString();
+            ScoreCounter.text = "Score: " + score.ToString();
+            Lives.text = "Lives: " + livesCount.ToString();
+            GoalLine.text = kills.ToString() + "/" + killGoal.ToString();
         }
         else
         {
@@ -56,12 +55,14 @@ public class L2Manager_DC : MonoBehaviour
                     highScore = score;
                     PlayerPrefs.SetInt("high_score", highScore);
                 }
+                UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
             }
             else if (kills >= killGoal)
             {
                 Debug.Log("Level Win!");
                 PlayerPrefs.SetInt("cur_score", score);
                 PlayerPrefs.SetInt("lives", livesCount);
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Sample3");
             }
         }
     }
@@ -81,6 +82,9 @@ public class L2Manager_DC : MonoBehaviour
         #region coroutinecall
         StartCoroutine(instantiateEnemy());
         #endregion
+        #region coroutinecall
+        StartCoroutine(instantiateCollectable());
+        #endregion
     }
 
     public void NinjaDied() //for when the ninja dies.  you deal with Iframes.  Also, Where should I have them spawn for sanity reasons?
@@ -92,6 +96,9 @@ public class L2Manager_DC : MonoBehaviour
     public void BonusPoints()
     {
         score += 30; //call BonusPoints when you get a collectable
+        #region coroutinecall
+        StartCoroutine(instantiateCollectable());
+        #endregion
     }
 
     private IEnumerator instantiateEnemy()
@@ -110,5 +117,18 @@ public class L2Manager_DC : MonoBehaviour
             GameObject instance = Instantiate(ninja);
             instance.transform.position = new Vector2(10.1875f, randomHeight);
         }
+    }
+
+    private IEnumerator instantiateCollectable()
+    {
+        int timeSPawn = Random.Range(2, 5);
+        yield return new WaitForSeconds(timeSPawn);
+        Vector2 placement = new Vector2(0, 0);
+        float xPos = Random.Range(-10.5f, 10.5f);
+        float yPos = Random.Range(-3.8f, 3.8f);
+        GameObject instance = Instantiate(collectablePrefab);
+        instance.transform.position = new Vector2(xPos, yPos);
+        Collectable2_DC collectable = instance.GetComponent<Collectable2_DC>();
+        collectable.manager = this;
     }
 }

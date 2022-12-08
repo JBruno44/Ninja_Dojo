@@ -31,6 +31,7 @@ public class Manager3_DC : MonoBehaviour
                 PlayerPrefs.SetInt("high_score", highScore);
             }
             PlayerPrefs.SetInt("cur_score", score);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
         }
     }
 
